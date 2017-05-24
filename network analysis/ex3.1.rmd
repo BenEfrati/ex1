@@ -1,0 +1,92 @@
+---
+title: "Exercise 3"
+output: github_document
+---
+
+##Question 1
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("C:\\Users\\Ben\\Documents\\R\\Ex3")
+#install.packages("igraph")
+```
+Load the data and create the graph
+```{r}
+ga.data <- read.csv('ga_edgelist.csv', header=TRUE, stringsAsFactors=FALSE)
+ga.vrtx <- read.csv('ga_actors.csv', header=TRUE, stringsAsFactors=FALSE)
+library(igraph)
+g <- graph.data.frame(ga.data, directed = F)
+```
+
+##Centrality
+
+###Compute betweenes
+```{r}
+library(igraph)
+between <- betweenness(g)
+maxBetweenes <- which.max(between)
+cat("The actor with the maximum betweenes is:\n")
+maxBetweenes
+
+```
+
+###Compute Closeness
+```{r}
+library(igraph)
+close <- closeness(g)
+maxCloseness <- which.max(close)
+cat("The actor with the maximum closeness is:\n")
+maxCloseness
+
+```
+
+###Compute Closeness
+```{r}
+library(igraph)
+eigen <- eigen_centrality(g, directed = F)
+maxEigen <- which.max(eigen$vector)
+cat("The actor with the maximum eigenvector is:\n")
+maxEigen
+
+```
+
+##Communities
+###First algorithm 
+cluster_edge_betweenness performs this algorithm by calculating the edge betweenness of the graph, removing the edge with the highest edge betweenness score, then recalculating edge betweenness of the edges and again removing the one with the highest score, etc.
+```{r}
+set.seed(123)
+gc <- cluster_edge_betweenness(g,directed = F)
+cat("Number of communities:\n")
+cat(length(gc))
+cat("\n")
+cat("Size of communities:\n")
+cat(sizes(gc))
+cat("\n")
+cat("Modularity is:\n")
+cat(modularity(gc))
+plot(gc,g)
+
+```
+
+
+###Second algorithm
+cluster_fast_greedy
+```{r}
+set.seed(123)
+greedy <- cluster_fast_greedy(g)
+cat("Number of communities:\n")
+cat(length(greedy))
+cat("\n")
+cat("Size of communities:\n")
+cat(sizes(greedy))
+cat("\n")
+cat("Modularity is:\n")
+cat(modularity(greedy))
+cat("\n")
+plot(greedy,g)
+
+```
+
