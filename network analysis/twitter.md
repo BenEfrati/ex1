@@ -69,20 +69,41 @@ degr.score <- degree(twitterg)
 V(twitterg)$size <- degr.score/15
 V(twitterg)$name <- ifelse(V(twitterg)$size>10,V(twitterg)$name,NA)
 #twitterg$layout <- layout.fruchterman.reingold(twitterg, niter=5000)
+plot( twitterg, layout = layout.reingold.tilford,
+      edge.width = 1,
+      edge.arrow.width = 0.3,
+      vertex.size = 5,
+      edge.arrow.size = 0.5,
+      vertex.size2 = 3,
+      vertex.label.cex = 1,
+      asp = 0.35,
+      margin = -0.1)
+```
+
+![](twitter_files/figure-markdown_github/unnamed-chunk-3-1.png)
+
+``` r
+plot(twitterg,layout=layout.circle)
+```
+
+![](twitter_files/figure-markdown_github/unnamed-chunk-3-2.png)
+
+``` r
 igraph.options(plot.layout=layout.graphopt, vertex.size=7)
 
 plot(twitterg, asp=0)
 ```
 
-![](twitter_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](twitter_files/figure-markdown_github/unnamed-chunk-3-3.png)
+
+on this graph you can see that there is connection almost between all the members, the few white areas shows on the missing connections but you can see by that graph that almost everyone connected
 
 ``` r
 #restore names and sizes
 twitterg <- graph.data.frame(new, directed = F)
 ```
 
-Centrality
-----------
+three plots for the same graph, in first one is divided to three groups and the second plot is graphopt which try to optimize the view. the third is a circle. As we can see, all the Mks are connected so the edges overrides each other \#\#Centrality
 
 ### Compute betweenes
 
@@ -189,7 +210,9 @@ print(modularity(tgc))
 plot(tgc,twitterg)
 ```
 
-![](twitter_files/figure-markdown_github/unnamed-chunk-7-1.png) \#\#\#Second algorithm
+![](twitter_files/figure-markdown_github/unnamed-chunk-8-1.png)
+
+### Second algorithm
 
 ``` r
 set.seed(123)
@@ -235,4 +258,4 @@ print(modularity(tgreedy))
 plot(tgreedy,twitterg)
 ```
 
-![](twitter_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](twitter_files/figure-markdown_github/unnamed-chunk-9-1.png)
