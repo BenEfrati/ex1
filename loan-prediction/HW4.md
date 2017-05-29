@@ -1342,7 +1342,8 @@ write_predict(model.predict(test_df[predictor_var]), test_df)
     
 
 Submissions
-![submissions.png](attachment:submissions.png)
+
+![png](submissions.png)
 
 Leaderboard
-![leaderboard.png](attachment:leaderboard.png)
+![png](leaderboard.png)
