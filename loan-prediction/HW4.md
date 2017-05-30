@@ -56,7 +56,7 @@ plot(arange(5))
 
 
 
-    [<matplotlib.lines.Line2D at 0x8cbda50>]
+    [<matplotlib.lines.Line2D at 0x88a3a50>]
 
 
 
@@ -83,6 +83,7 @@ After importing the library, you read the dataset using function read_csv(). The
 
 ```python
 df = pd.read_csv("./data/train.csv") #Reading the dataset in a dataframe using Pandas
+test_df = pd.read_csv("./data/test.csv") #Reading the dataset in a dataframe using Pandas
 ```
 
 ## Let’s begin with exploration
@@ -409,25 +410,114 @@ df.describe() # get the summary of numerical variables
 
 describe() function would provide count, mean, standard deviation (std), min, quartiles and max in its output
 
-### Task 1: inferencing from describe()
-
-1. How many missing values we have and in which attributes? (compare counts)
-2. What is the percentage of applicants with a credit_history (=1) ?
-3. Check the distributions of ApplicantIncome and CoapplicantIncome.
-
-### Check yourself:
-
-Here are a few inferences, you can draw by looking at the output of describe() function:
-1. 
-    - LoanAmount has (614 – 592) 22 missing values.
-    - Loan_Amount_Term has (614 – 600) 14 missing values.
-    
-    - Credit_History has (614 – 564) 50 missing values.
-    
-2. We can also look that about 84% applicants have a credit_history. How? The mean of Credit_History field is 0.84 (Remember, Credit_History has value 1 for those who have a credit history and 0 otherwise)
-3. The ApplicantIncome distribution seems to be in line with expectation. Same with CoapplicantIncome. Please note that we can get an idea of a possible skew in the data by comparing the mean to the median, i.e. the 50% figure.
+Try to learn also from test set
 
 
+```python
+test_df.describe()
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ApplicantIncome</th>
+      <th>CoapplicantIncome</th>
+      <th>LoanAmount</th>
+      <th>Loan_Amount_Term</th>
+      <th>Credit_History</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>367.000000</td>
+      <td>367.000000</td>
+      <td>362.000000</td>
+      <td>361.000000</td>
+      <td>338.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>4805.599455</td>
+      <td>1569.577657</td>
+      <td>136.132597</td>
+      <td>342.537396</td>
+      <td>0.825444</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>4910.685399</td>
+      <td>2334.232099</td>
+      <td>61.366652</td>
+      <td>65.156643</td>
+      <td>0.380150</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>28.000000</td>
+      <td>6.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>2864.000000</td>
+      <td>0.000000</td>
+      <td>100.250000</td>
+      <td>360.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>3786.000000</td>
+      <td>1025.000000</td>
+      <td>125.000000</td>
+      <td>360.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>5060.000000</td>
+      <td>2430.500000</td>
+      <td>158.000000</td>
+      <td>360.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>72529.000000</td>
+      <td>24000.000000</td>
+      <td>550.000000</td>
+      <td>480.000000</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+as we can see, there is no significant difference between test and train, so for the numeric value we will do the same preprocessing
+So it is not necessary to combine train and test data for filling missing value.
 
 For the non-numerical values (e.g. Property_Area, Credit_History etc.), we can look at frequency distribution to understand whether they make sense or not. The frequency table can be printed by following command:
 
@@ -446,6 +536,21 @@ df['Property_Area'].value_counts()
 
 
 
+
+```python
+test_df['Property_Area'].value_counts()
+```
+
+
+
+
+    Urban        140
+    Semiurban    116
+    Rural        111
+    Name: Property_Area, dtype: int64
+
+
+
 ## Distribution analysis
 
 Now that we are familiar with basic data characteristics, let us study distribution of various variables. Let us start with numeric variables – namely ApplicantIncome and LoanAmount
@@ -460,7 +565,23 @@ df['ApplicantIncome'].hist(bins=50)
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x95446f0>
+    <matplotlib.axes._subplots.AxesSubplot at 0x9130550>
+
+
+
+
+![png](output_32_1.png)
+
+
+
+```python
+test_df['ApplicantIncome'].hist(bins=50)
+```
+
+
+
+
+    <matplotlib.axes._subplots.AxesSubplot at 0x91f5fb0>
 
 
 
@@ -480,7 +601,7 @@ df.boxplot(column='ApplicantIncome')
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x9617690>
+    <matplotlib.axes._subplots.AxesSubplot at 0x93e3510>
 
 
 
@@ -498,7 +619,7 @@ df.boxplot(column='ApplicantIncome', by = 'Education')
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x98264d0>
+    <matplotlib.axes._subplots.AxesSubplot at 0x9616df0>
 
 
 
@@ -522,12 +643,28 @@ df['LoanAmount'].hist(bins=50)
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x9967170>
+    <matplotlib.axes._subplots.AxesSubplot at 0xa4069f0>
 
 
 
 
 ![png](output_42_1.png)
+
+
+
+```python
+test_df['LoanAmount'].hist(bins=50)
+```
+
+
+
+
+    <matplotlib.axes._subplots.AxesSubplot at 0x87af750>
+
+
+
+
+![png](output_43_1.png)
 
 
 
@@ -538,12 +675,12 @@ df.boxplot(column='LoanAmount')
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0xa69c2d0>
+    <matplotlib.axes._subplots.AxesSubplot at 0xa871f50>
 
 
 
 
-![png](output_43_1.png)
+![png](output_44_1.png)
 
 
 Again, there are some extreme values. Clearly, both ApplicantIncome and LoanAmount require some amount of data munging. LoanAmount has missing and well as extreme values values, while ApplicantIncome has a few extreme values, which demand deeper understanding. We will take this up in coming sections.
@@ -567,12 +704,27 @@ temp1
 
 
 
+
+```python
+temp2 = test_df['Credit_History'].value_counts(ascending=True)
+temp2
+```
+
+
+
+
+    0.0     59
+    1.0    279
+    Name: Credit_History, dtype: int64
+
+
+
 Probability of getting loan for each Credit History class:
 
 
 ```python
-temp2 = df.pivot_table(values='Loan_Status',index=['Credit_History'],aggfunc=lambda x: x.map({'Y':1,'N':0}).mean())
-temp2
+temp3 = df.pivot_table(values='Loan_Status',index=['Credit_History'],aggfunc=lambda x: x.map({'Y':1,'N':0}).mean())
+temp3
 ```
 
 
@@ -640,16 +792,12 @@ ax2.set_title("Probability of getting loan by credit history")
 
 
 
-    <matplotlib.text.Text at 0xabbcff0>
+    <matplotlib.text.Text at 0xac0d450>
 
 
 
 
-![png](output_51_1.png)
-
-
-
-![png](output_51_2.png)
+![png](output_53_1.png)
 
 
 This shows that the chances of getting a loan are eight-fold if the applicant has a valid credit history. You can plot similar graphs by Married, Self-Employed, Property_Area, etc.
@@ -665,12 +813,12 @@ temp3.plot(kind='bar', stacked=True, color=['red','blue'], grid=False)
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0xacd7db0>
+    <matplotlib.axes._subplots.AxesSubplot at 0xa8c29b0>
 
 
 
 
-![png](output_53_1.png)
+![png](output_55_1.png)
 
 
 We just saw how we can do exploratory analysis in Python using Pandas. I hope your love for pandas (the animal) would have increased by now – given the amount of help, the library can provide you in analyzing datasets.
@@ -715,6 +863,30 @@ df.apply(lambda x: sum(x.isnull()),axis=0)
     Credit_History       50
     Property_Area         0
     Loan_Status           0
+    dtype: int64
+
+
+
+
+```python
+test_df.apply(lambda x: sum(x.isnull()),axis=0)
+```
+
+
+
+
+    Loan_ID               0
+    Gender               11
+    Married               0
+    Dependents           10
+    Education             0
+    Self_Employed        23
+    ApplicantIncome       0
+    CoapplicantIncome     0
+    LoanAmount            5
+    Loan_Amount_Term      6
+    Credit_History       29
+    Property_Area         0
     dtype: int64
 
 
@@ -765,7 +937,7 @@ Since ~86% values are “No”, it is safe to impute the missing values as “No
 #df['Self_Employed'].fillna('No',inplace=True)
 ```
 
-####Self Employe missing value
+#### Self Employe missing value
 
 If we replace all na with "No" the ratio will be more than 86% for "No". So we want to preserve this ratio, so radomly set 86% to No and the remaining to Yes
 
@@ -861,12 +1033,12 @@ df['LoanAmount_log'].hist(bins=20)
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0xad22150>
+    <matplotlib.axes._subplots.AxesSubplot at 0xace0050>
 
 
 
 
-![png](output_80_1.png)
+![png](output_83_1.png)
 
 
 Now the distribution looks much closer to normal and effect of extreme values has been significantly subsided.
@@ -883,12 +1055,12 @@ df['LoanAmount_log'].hist(bins=20)
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0xa8e8d90>
+    <matplotlib.axes._subplots.AxesSubplot at 0xad521d0>
 
 
 
 
-![png](output_82_1.png)
+![png](output_85_1.png)
 
 
 Now we see that the distribution is much better than before. 
@@ -899,6 +1071,28 @@ Now we see that the distribution is much better than before.
 2. Also, I encourage you to think about possible additional information which can be derived from the data. For example, creating a column for LoanAmount/TotalIncome might make sense as it gives an idea of how well the applicant is suited to pay back his loan.
 
 ## check Yourself
+
+
+```python
+df['Loan_Amount_Term'].value_counts()
+```
+
+
+
+
+    360.0    512
+    180.0     44
+    480.0     15
+    300.0     13
+    84.0       4
+    240.0      4
+    120.0      3
+    36.0       2
+    60.0       2
+    12.0       1
+    Name: Loan_Amount_Term, dtype: int64
+
+
 
 
 ```python
@@ -1168,7 +1362,7 @@ classification_model(model, df,predictor_var,outcome_var)
 ```
 
     Accuracy : 88.925%
-    Cross-Validation Score : 69.536%
+    Cross-Validation Score : 69.374%
     
 
 2.Not much better according to the test score
@@ -1191,7 +1385,7 @@ classification_model(model, df,predictor_var,outcome_var)
 ```
 
     Accuracy : 100.000%
-    Cross-Validation Score : 77.526%
+    Cross-Validation Score : 77.529%
     
 
 Here we see that the accuracy is 100% for the training set. This is the ultimate case of overfitting and can be resolved in two ways:
@@ -1208,16 +1402,16 @@ featimp = pd.Series(model.feature_importances_, index=predictor_var).sort_values
 print(featimp)
 ```
 
-    Credit_History      0.282345
-    TotalIncome_log     0.260660
-    LoanAmount_log      0.224758
-    Dependents          0.051472
-    Property_Area       0.047475
-    Loan_Amount_Term    0.043015
-    Married             0.025990
-    Education           0.023181
-    Gender              0.020788
-    Self_Employed       0.020317
+    TotalIncome_log     0.270649
+    Credit_History      0.259280
+    LoanAmount_log      0.226463
+    Property_Area       0.053353
+    Dependents          0.053034
+    Loan_Amount_Term    0.046285
+    Married             0.027708
+    Education           0.023442
+    Gender              0.020318
+    Self_Employed       0.019467
     dtype: float64
     
 
@@ -1226,14 +1420,13 @@ Let’s use the top 5 variables for creating a model. Also, we will modify the p
 
 ```python
 model = RandomForestClassifier(n_estimators=100, min_samples_split=25)
-#predictor_var = ['TotalIncome_log','LoanAmount_log','Credit_History','Gender','Married','Self_Employed','Dependents','Property_Area']
-predictor_var = ['Credit_History','Self_Employed','Property_Area']
+predictor_var = ['TotalIncome_log','LoanAmount_log','Credit_History','Gender','Married','Self_Employed','Dependents','Property_Area']
 classification_model(model, df,predictor_var,outcome_var)
 #write_predict(model.predict(test_df[predictor_var]), test_df)
 ```
 
-    Accuracy : 80.945%
-    Cross-Validation Score : 80.946%
+    Accuracy : 83.062%
+    Cross-Validation Score : 79.807%
     
 
 Notice that although accuracy reduced, but the cross-validation score is improving showing that the model is generalizing well. Remember that random forest models are not exactly repeatable. Different runs will result in slight variations because of randomization. But the output should stay in the ballpark.
@@ -1247,14 +1440,7 @@ You would have noticed that even after some basic parameter tuning on random for
 Be proud of yourself for getting this far!
 You are invited to improve your result and submit to the site to test your place in the leaderboard. 
 
-### Feature engineering
-
-
-```python
-
-```
-
-###Data preprocessing
+### Data preprocessing
 Same as above, just in a function
 
 
@@ -1268,7 +1454,9 @@ def preprocess(df, is_test):
     df['LoanAmount_log'] = np.log(df['LoanAmount'])
     df['TotalIncome'] = df['ApplicantIncome'] + df['CoapplicantIncome']
     df['TotalIncome_log'] = np.log(df['TotalIncome'])
-    df['Loan_Amount_Term'].fillna(360, inplace=True)
+    term_list = df['Loan_Amount_Term'].value_counts().index.tolist()
+    term_mean = np.mean(term_list)
+    df['Loan_Amount_Term'].fillna(term_mean, inplace=True)
     draw = choice([1,0], 1, p=[0.14,0.86])[0]
     df['Credit_History'].fillna(1, inplace=True)
     df['Dependents'].fillna(0, inplace=True)
@@ -1289,7 +1477,7 @@ def write_predict(result, df):
     df.to_csv('./data/result.csv',columns=['Loan_ID','Loan_Status'],index=False)
 ```
 
-####Test Set
+#### Test Set
 read again and do the same preprocessing for train and test before build the classification model
 
 
@@ -1300,29 +1488,45 @@ df = pd.read_csv("./data/train.csv") #Reading the dataset in a dataframe using P
 preprocess(df, False)
 ```
 
-###Extra Tree
+#### Model classifier parameters:
+##### n_estimators
+according to articles on this domain, the squre of number of trees needs to equals number of features.
+In addition, there is a relation between dataset size, which is small, and the number of trees that can be enlarged and affects on the improvement of the model. Also we did some empirical experiments and we found the best value for our case is 20-100
+
+### Extra Tree
 This class implements a meta estimator that fits a number of randomized decision trees (a.k.a. extra-trees) on various sub-samples of the dataset and use averaging to improve the predictive accuracy and control over-fitting.
 
 
 ```python
-model = ExtraTreesClassifier(n_estimators=140)
-predictor_var = ['Gender', 'Married', 'Dependents', 'Education',
-       'Self_Employed', 'Loan_Amount_Term', 'Credit_History', 'Property_Area',
-        'LoanAmount_log','TotalIncome_log']
+model = ExtraTreesClassifier(n_estimators=20)
+predictor_var = ['TotalIncome_log','LoanAmount_log','Credit_History','Property_Area']
 classification_model(model, df,predictor_var,outcome_var)
 write_predict(model.predict(test_df[predictor_var]), test_df)
 ```
 
     Accuracy : 100.000%
-    Cross-Validation Score : 75.895%
+    Cross-Validation Score : 73.291%
     
 
-###Gradient Boosting
+
+```python
+featimp = pd.Series(model.feature_importances_, index=predictor_var).sort_values(ascending=False)
+print(featimp)
+```
+
+    TotalIncome_log    0.367410
+    LoanAmount_log     0.313690
+    Credit_History     0.290704
+    Property_Area      0.028196
+    dtype: float64
+    
+
+### Gradient Boosting
 GB builds an additive model in a forward stage-wise fashion; it allows for the optimization of arbitrary differentiable loss functions.
 
 
 ```python
-model = GradientBoostingClassifier(n_estimators=200)
+model = GradientBoostingClassifier(n_estimators=100)
 predictor_var = ['Gender', 'Married', 'Dependents', 'Education',
        'Self_Employed', 'Loan_Amount_Term', 'Credit_History', 'Property_Area',
         'LoanAmount_log','TotalIncome_log']
@@ -1330,20 +1534,32 @@ classification_model(model, df,predictor_var,outcome_var)
 write_predict(model.predict(test_df[predictor_var]), test_df)
 #With different loss function
 predictor_var = ['Self_Employed', 'Credit_History', 'Property_Area']
-model = GradientBoostingClassifier(n_estimators=200,loss='exponential')
+model = GradientBoostingClassifier(n_estimators=10,loss='exponential')
 classification_model(model, df,predictor_var,outcome_var)
 write_predict(model.predict(test_df[predictor_var]), test_df)
 ```
 
-    Accuracy : 92.834%
-    Cross-Validation Score : 77.043%
+    Accuracy : 88.762%
+    Cross-Validation Score : 77.693%
     Accuracy : 80.945%
     Cross-Validation Score : 80.946%
     
 
-Submissions
 
-![png](submissions.png)
+```python
+model = RandomForestClassifier(n_estimators=30,min_samples_split=15)
+predictor_var = ['TotalIncome_log','LoanAmount_log','Loan_Amount_Term','Credit_History','Property_Area']
+
+classification_model(model, df,predictor_var,outcome_var)
+write_predict(model.predict(test_df[predictor_var]), test_df)
+```
+
+    Accuracy : 86.319%
+    Cross-Validation Score : 79.150%
+    
+
+Submissions
+![submission.png](submission.png)
 
 Leaderboard
-![png](leaderboard.png)
+![leaderboard.png](leaderboard.png)
