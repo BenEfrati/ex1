@@ -359,6 +359,13 @@ if __name__ == '__main__':
     # senderlist=['dean@bgu.ac.il','peler@exchange.bgu.ac.il','bitahon@bgu.ac.il','career@bgu.ac.il','shanigu@bgu.ac.il']
     # filterBySenders('clearEmailsBodyList2','filteredBySenders',senderlist)
     # translateToEnglish('filteredBySenders','filteredBySendersTranslated',821,880)
-
+    basicSatistics('filteredBySendersTranslated',senderlist)
     print('done.')
 ```
+
+### Data analyze
+1. Word frequency of every sender
+2. Words frequency of all senders
+3. Number of words in emails
+
+We serialize this data and saved it in a file which we can deserialize later and load it to memory
