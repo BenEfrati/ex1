@@ -102,6 +102,8 @@ import sys
 import collections
 from googletrans import Translator
 import string
+import itertools
+import pickle
 
 def ListMessagesMatchingQuery(service, user_id, query=''):
     try:
@@ -304,6 +306,47 @@ def translateToEnglish(srcFilePath, destinationFileName, start, end):
                 except:
                     print('skipped: ' + str(i))
 
+def basicSatistics(fileName,senderlist):
+    csv.field_size_limit(sys.maxint)
+    with open(fileName + '.csv', 'rb') as csv_file:
+        reader = csv.reader(csv_file)
+        line = next(reader, None)
+        i = 0
+        sendersUniqueWords = {}
+        emailsLengthAVG=[]
+        #5 senders
+        sendersWords={}
+        for k in range(0,5):
+            sendersWords[senderlist[k]]=[]
+            sendersUniqueWords[senderlist[k]]=[]
+        allWords=[]
+        while (line):
+            print(i)
+            i = i + 1
+            sender = line[0]
+            splitEmail=line[1].split();
+            #numOfUniqeWords=collections.Counter(splitEmail)
+            allWords.append(splitEmail)
+            sendersWords[line[0]].append(len(splitEmail))
+            sendersUniqueWords[line[0]].append(splitEmail)
+            emailsLengthAVG.append(len(splitEmail))
+            line = next(reader, None)
+        uniqueCountPerSender=[]
+        for k in range(0,5):
+            key=senderlist[k]
+            dictionaryValues=sendersUniqueWords[key];
+            uniqueCountPerSender.append([key,collections.Counter(list(itertools.chain.from_iterable(dictionaryValues)))])
+        allWordsCollectionUniqueCount=collections.Counter(list(itertools.chain.from_iterable(allWords)))
+        numberOfWordsTotal = collections.Counter(list(itertools.chain.from_iterable(allWords)))        
+        with open("numberOfWordsTotal.txt", "wb") as fp:
+            pickle.dump(numberOfWordsTotal, fp)
+        with open("allWordsCollectionUniqueCount.txt", "wb") as fp:
+            pickle.dump(allWordsCollectionUniqueCount, fp)
+        with open("uniqueCountPerSender.txt", "wb") as fp:
+            pickle.dump(uniqueCountPerSender, fp)
+        #for reading:
+        # with open("test.txt", "rb") as fp:  # Unpickling
+        #     b = pickle.load(fp)
 
 if __name__ == '__main__':
 
